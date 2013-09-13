@@ -1,0 +1,22 @@
+--- SublimeCodeIntel.py	2013-09-13 16:14:44.000000000 +0200
++++ SublimeCodeIntel.py	2013-09-13 16:14:27.000000000 +0200
+@@ -300,7 +300,9 @@
+         text = view.substr(sublime.Region(lpos, pos + 1))
+         next = text[-1] if len(text) == pos + 1 - lpos else None
+ 
+-        if not next or next != '_' and not next.isalnum():
++        content = view.substr(sublime.Region(0, view.size()))
++        line = content[view.line(sel).begin():pos].strip()
++        if line and not next or next != '_' and not next.isalnum():
+             vid = view.id()
+             content = view.substr(sublime.Region(0, view.size()))
+ 
+@@ -312,7 +314,7 @@
+                 if cplns is not None:
+                     function = None if 'import ' in text else 'function'
+                     _completions = sorted(
+-                        [('%s  (%s)' % (n, t), n + ('($0)' if t == function else '')) for t, n in cplns],
++                        [('%s  (%s)' % (n, t), n + ('($0)' if t == function and not 'import' in line else '')) for t, n in cplns],
+                         key=lambda o: o[1]
+                     )
+                     if _completions:

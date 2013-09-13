@@ -1,0 +1,40 @@
+--- SublimeCodeIntel.py	2013-09-13 14:47:25.000000000 +0200
++++ SublimeCodeIntel.py	2013-09-13 14:47:19.000000000 +0200
+@@ -1263,3 +1263,25 @@
+ class SublimecodeintelDisableLiveLangCommand(SublimecodeintelLiveCommand):
+     def is_enabled(self):
+         return super(SublimecodeintelDisableLiveLangCommand, self).is_enabled(True, True)
++
++class ShowPythonDefinition(sublime_plugin.TextCommand):
++    def run(self, edit, block=False):
++        view = self.view
++        path = view.file_name()
++        lang = guess_lang(view, path)
++        if not lang:
++            return
++        def _autocomplete_callback(view, path, lang):
++            content = view.substr(sublime.Region(0, view.size()))
++            sel = view.sel()[0]
++            pos = sel.end()
++            if pos:
++                def _trigger(cplns, calltips):
++                    if calltips is not None:
++                        # Trigger a tooltip
++                        calltip(view, 'tip', calltips[0])
++
++                codeintel(view, path, content, lang, pos, ('cplns', 'calltips'), _trigger)
++        _autocomplete_callback(view, path, lang)
++        # If it's a fill char, queue using lower values and preemptive behavior
++        # queue(view, _autocomplete_callback, 0, 0, True, args=[path, lang], kwargs={})
+--- Default (OSX).sublime-keymap	2013-09-13 14:55:32.000000000 +0200
++++ Default (OSX).sublime-keymap	2013-09-13 14:57:51.000000000 +0200
+@@ -1,5 +1,6 @@
+ [
+ 	{ "keys": ["shift+ctrl+space"], "command": "code_intel_auto_complete" },
+ 	{ "keys": ["super+alt+ctrl+up"], "command": "goto_python_definition"},
+-	{ "keys": ["super+alt+ctrl+left"], "command": "back_to_python_definition"}
+-]
+\ No newline at end of file
++	{ "keys": ["super+alt+ctrl+left"], "command": "back_to_python_definition"},
++    { "keys": ["super+shift+k"], "command": "show_python_definition" }
++]
