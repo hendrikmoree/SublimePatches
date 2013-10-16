@@ -1,0 +1,23 @@
+--- SublimeCodeIntel.py	2013-09-13 16:17:45.000000000 +0200
++++ SublimeCodeIntel.py	2013-09-13 16:37:26.000000000 +0200
+@@ -201,13 +201,20 @@
+             params = [p.strip() for p in m.group(2).split(',')]
+             if params:
+                 snippet = []
++                _completions = []
+                 for i, p in enumerate(params):
+                     if p:
++                        p = p.strip()
++                        argname = p.split('=')[0]
++                        _completions.append((argname + ' (argument)', argname))
++                        if p.find('=') != -1:
++                          continue
+                         var, _, _ = p.partition('=')
+                         var = var.strip()
+                         if ' ' in var:
+                             var = var.split(' ')[1]
+                         if var[0] == '$':
+                             var = var[1:]
+                         snippet.append('${%s:%s}' % (i + 1, var))
++                completions[view.id()] = _completions
+                 snippet = ', '.join(snippet)
