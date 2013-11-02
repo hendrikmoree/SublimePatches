@@ -1,7 +1,7 @@
 diff -urN sublimelinter/modules/libs/python2_lint.py sublimelinter/modules.new/libs/python2_lint.py
 --- sublimelinter/modules/libs/python2_lint.py	1970-01-01 01:00:00.000000000 +0100
 +++ sublimelinter/modules.new/libs/python2_lint.py	2013-10-16 18:50:48.000000000 +0200
-@@ -0,0 +1,220 @@
+@@ -0,0 +1,221 @@
 +#!/usr/bin/env python
 +# -*- coding: utf-8 -*-
 +# python.py - Lint checking for Python - given filename and contents of the code:
@@ -213,7 +213,8 @@ diff -urN sublimelinter/modules/libs/python2_lint.py sublimelinter/modules.new/l
 +if __name__ == '__main__':
 +    filename = argv[1]
 +    result = []
-+    for m in Linter().do_check(pep8=False, pep8_ignore=[], pyflakes_ignore=[], pyflakes_disabled=False, code=open(filename).read(), filename=filename):
++    code = stdin.read()
++    for m in Linter().do_check(pep8=False, pep8_ignore=[], pyflakes_ignore=[], pyflakes_disabled=False, code=code, filename=filename):
 +        level = None
 +        if hasattr(m, 'level'):
 +            level = m.level
