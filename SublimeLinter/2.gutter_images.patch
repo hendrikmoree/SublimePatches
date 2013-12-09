@@ -1,0 +1,36 @@
+--- SublimeLinter.py	2013-12-09 16:50:47.000000000 +0100
++++ SublimeLinter.py.orig	2013-12-09 16:50:41.000000000 +0100
+@@ -39,7 +39,7 @@
+ # "alpha", "bright", "dark", "hard" and "simple"
+ MARK_THEMES = ('alpha', 'bright', 'dark', 'hard', 'simple')
+ # The path to the built-in gutter mark themes
+-MARK_THEMES_PATH = os.path.join('..', 'SublimeLinter', 'gutter_mark_themes')
++MARK_THEMES_PATH = os.path.join('Packages', 'SublimeLinter', 'gutter_mark_themes')
+ # The original theme for anyone interested the previous minimalist approach
+ ORIGINAL_MARK_THEME = {
+     'violation': 'dot',
+@@ -216,7 +216,6 @@
+     vid = view.id()
+     erase_lint_marks(view)
+     types = {'warning': warning_underlines, 'violation': violation_underlines, 'illegal': error_underlines}
+-
+     for type_name, underlines in list(types.items()):
+         if underlines:
+             view.add_regions('lint-underline-' + type_name, underlines, 'sublimelinter.underline.' + type_name, flags=sublime.DRAW_EMPTY_AS_OVERWRITE)
+@@ -262,7 +261,7 @@
+                     else:
+                         gutter_mark_image = gutter_mark_theme + '-' + lint_type
+ 
+-                args.append(gutter_mark_image)
++                args.append(gutter_mark_image + ".png")
+ 
+                 if outline_style == 'none':
+                     args.append(sublime.HIDDEN)
+@@ -369,7 +368,6 @@
+     language = None
+     linter = None
+     syntaxMap = view.settings().get('sublimelinter_syntax_map', {})
+-
+     if syntax in syntaxMap:
+         language = syntaxMap.get(syntax, '').lower()
+     elif lc_syntax in syntaxMap:
